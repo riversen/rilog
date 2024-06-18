@@ -23,7 +23,7 @@ fi
 
 # Customize the prompt to include date and time
 # Directly set the PS1 variable for prompt customization
-PS1='$(date +%Y-%m-%d-%H-%M-%S) %n@%m:%~%# '
+export PS1='%{$fg[cyan]%}$(date +'%Y-%m-%d-%H-%M-%S') %{$reset_color%}%n@%m:%~%# '
 
 # Print helpful instruction
 echo "Terminal session is being logged to $LOGFILE."
