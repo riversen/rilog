@@ -7,6 +7,13 @@ fi
 LOGFILE=~/.zshlog/shelllog.$(date +'%Y-%m-%d-%H-%M-%S').log
 TIMINGFILE=~/.zshlog/shelllog.$(date +'%Y-%m-%d-%H-%M-%S').timing
 
+# Check if the script command is installed
+if ! command -v script &> /dev/null; then
+  echo "Error: 'script' command is not installed. Please install it to enable logging."
+  echo "On Debian-based systems, you can install it with: sudo apt-get install bsdutils"
+  return 1
+fi
+
 # Start logging with script command
 if [[ -z "$SCRIPT_LOGGING" ]]; then
   export SCRIPT_LOGGING=1
@@ -15,13 +22,10 @@ if [[ -z "$SCRIPT_LOGGING" ]]; then
 fi
 
 # Customize the prompt to include date and time
-autoload -U colors && colors
-setopt PROMPT_SUBST
+# Directly set the PS1 variable for prompt customization
+PS1='$(date +%Y-%m-%d-%H-%M-%S) %n@%m:%~%# '
 
-PROMPT='%{$fg[cyan]%}$(date +'%Y-%m-%d-%H-%M-%S')%{$reset_color%} %{$fg[green]%}%n@%m%{$reset_color%}:%{$fg[blue]%}%~%{$reset_color%}%# '
-
-# Save history to a file
-export HISTFILE=~/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
+# Print helpful instruction
+echo "Terminal session is being logged to $LOGFILE."
+echo "To replay the session, use the command: scriptreplay --timing=$TIMINGFILE $LOGFILE"
 
